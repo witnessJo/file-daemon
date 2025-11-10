@@ -5,7 +5,7 @@ all: build run
 
 .PHONY: build
 build:
-	go build -o file-sentinel ./cmd/file-sentinel
+	go build -o ./build/file-sentinel ./cmd/file-sentinel
 
 .PHONY: run
 run:
@@ -34,3 +34,7 @@ ent-install:
 .PHONY: ent
 ent:
 	ent generate --feature sql/upsert ./ent/schema
+
+.PHONY: docker
+docker:
+	docker build -t file-sentinel:latest .

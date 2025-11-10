@@ -7,4 +7,4 @@ CLAUDE.md
 .dir-locals.el
 
 # binary files
-./file-sentinel
+build
