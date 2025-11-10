@@ -1,0 +1,10 @@
+# claude relative files
+CLAUDE.md
+
+# ignore emacs relatives
+.projectile
+.projectile-cache.eld
+.dir-locals.el
+
+# binary files
+file-sentinel
