@@ -10,7 +10,7 @@ import (
 )
 
 func TestNewFileSentinel(t *testing.T) {
-	repo, err := repository.NewRepositoryNative()
+	repo, err := repository.NewRepositoryEnt()
 	if err != nil {
 		t.Fatalf("Failed to create repository: %v", err)
 	}
@@ -32,7 +32,7 @@ func TestNewFileSentinel(t *testing.T) {
 }
 
 func TestGetFiles(t *testing.T) {
-	repo, err := repository.NewRepositoryNative()
+	repo, err := repository.NewRepositoryEnt()
 	if err != nil {
 		t.Fatalf("Failed to create repository: %v", err)
 	}
@@ -161,7 +161,7 @@ func TestGetFiles(t *testing.T) {
 }
 
 func TestStart(t *testing.T) {
-	repo, err := repository.NewRepositoryNative()
+	repo, err := repository.NewRepositoryEnt()
 	if err != nil {
 		t.Fatalf("Failed to create repository: %v", err)
 	}
@@ -195,7 +195,7 @@ func TestStart(t *testing.T) {
 }
 
 func TestSetMinuteCycle(t *testing.T) {
-	repo, err := repository.NewRepositoryNative()
+	repo, err := repository.NewRepositoryEnt()
 	if err != nil {
 		t.Fatalf("Failed to create repository: %v", err)
 	}
@@ -223,7 +223,7 @@ func TestSetMinuteCycle(t *testing.T) {
 }
 
 func TestSetDirPath(t *testing.T) {
-	repo, err := repository.NewRepositoryNative()
+	repo, err := repository.NewRepositoryEnt()
 	if err != nil {
 		t.Fatalf("Failed to create repository: %v", err)
 	}
@@ -251,7 +251,7 @@ func TestSetDirPath(t *testing.T) {
 }
 
 func TestUpdateFileList(t *testing.T) {
-	repo, err := repository.NewRepositoryNative()
+	repo, err := repository.NewRepositoryEnt()
 	if err != nil {
 		t.Fatalf("Failed to create repository: %v", err)
 	}

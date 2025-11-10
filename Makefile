@@ -26,3 +26,11 @@ helm-postgres:
 	helm repo add bitnami https://charts.bitnami.com/bitnami
 	helm repo update
 	helm install postgres bitnami/postgresql -f values.yaml
+
+.PHONY: ent-install
+ent-install:
+	go install entgo.io/ent/cmd/ent@latest
+
+.PHONY: ent
+ent:
+	ent generate --feature sql/upsert ./ent/schema

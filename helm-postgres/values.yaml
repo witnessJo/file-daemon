@@ -26,8 +26,7 @@ primary:
     runAsNonRoot: true
   service:
     type: NodePort
-    nodePorts:
-      postgresql: 30432
+    nodePort: 30432
 
 volumePermissions:
   enabled: true
