@@ -26,7 +26,8 @@ postgresql:
       runAsNonRoot: true
     service:
       type: NodePort
-      nodePort: 30432
+      nodePorts:
+        postgresql: 30432
 
   volumePermissions:
     enabled: true
