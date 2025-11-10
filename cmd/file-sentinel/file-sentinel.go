@@ -119,7 +119,7 @@ func (f *fileSentinel) getFileList(dirPath string) ([]model.FileInfo, error) {
 	}
 
 	for _, file := range fileList {
-		slog.Debug("Found file", "name", file.FileName, "size", file.SizeBytes)
+		slog.Debug("Found file", "name", file.FileName, "", file.SizeBytes)
 	}
 
 	return fileList, nil
