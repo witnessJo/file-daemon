@@ -14,3 +14,9 @@ run:
 .PHONY: test
 test:
 	go test ./...
+
+.PHONY: minikube
+minikube:
+	minikube start -p harman --nodes 2 \
+ --container-runtime=containerd --cni=cilium \
+ --cpus=2 --memory=2048mb --disk-size=20gb
