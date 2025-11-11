@@ -3,5 +3,5 @@
 {{- end }}
 
 {{- define "postgresql.host" -}}
-{{- printf "%s-postgresql" (include "db.name" .) }}
+{{- printf "%s-postgresql" .Release.Name }}
 {{- end }}

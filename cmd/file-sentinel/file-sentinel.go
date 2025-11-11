@@ -11,6 +11,7 @@ import (
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
 )
@@ -25,23 +26,29 @@ type fileSentinel struct {
 	namespace    string
 }
 
-func NewFileSentinel(repo repository.Repository, guestDir string, minuteCycle int) *fileSentinel {
-	var kubeconfig *string
-	if home := homedir.HomeDir(); home != "" {
-		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "absolute path to the kubeconfig file")
-	} else {
-		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
-	}
-	flag.Parse()
-
+func NewFileSentinel(repo repository.Repository, targetDir string, minuteCycle int) *fileSentinel {
 	// get node from kubernetes pod environment
 	nodeName := os.Getenv("MY_NODE_NAME")
 
 	// Initialize Kubernetes clientset
-	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
+	// Try in-cluster config first (for running inside a pod)
+	config, err := rest.InClusterConfig()
 	if err != nil {
-		slog.Error("Error building kubeconfig", "error", err)
-		panic(err)
+		// Fall back to kubeconfig file (for local development)
+		slog.Info("Not running in cluster, trying kubeconfig file")
+		var kubeconfig *string
+		if home := homedir.HomeDir(); home != "" {
+			kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "absolute path to the kubeconfig file")
+		} else {
+			kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
+		}
+		flag.Parse()
+
+		config, err = clientcmd.BuildConfigFromFlags("", *kubeconfig)
+		if err != nil {
+			slog.Error("Error building kubeconfig", "error", err)
+			panic(err)
+		}
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
@@ -53,6 +60,7 @@ func NewFileSentinel(repo repository.Repository, guestDir string, minuteCycle in
 	return &fileSentinel{
 		repo:         repo,
 		nodeName:     nodeName,
+		targetDir:    targetDir,
 		minuteCycle:  minuteCycle,
 		namespace:    "default",
 		hostMountPod: nil,

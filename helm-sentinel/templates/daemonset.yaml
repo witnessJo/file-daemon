@@ -20,6 +20,12 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
 
           env:
+            # Kubernetes node information
+            - name: MY_NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+
             # 앱 동작용 환경변수
             - name: TARGET_DIR_PATH
               value: {{ .Values.app.targetDirPath | quote }}
@@ -38,7 +44,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.db.secretName }}
-                  key: DB_EXTERNAL_PORT
+                  key: DB_PORT
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:

@@ -25,7 +25,8 @@ minikube:
 helm-postgres:
 	helm repo add bitnami https://charts.bitnami.com/bitnami
 	helm repo update
-	helm install postgres bitnami/postgresql -f values.yaml
+	helm dependency update helm-postgres
+	helm upgrade --install helm-postgres helm-postgres
 
 .PHONY: ent-install
 ent-install:
@@ -42,6 +43,7 @@ docker:
 
 .PHONY: helm-sentinel
 helm-sentinel:
+	helm dependency update helm-sentinel
 	helm upgrade --install file-sentinel helm-sentinel \
 	--set app.hostDirPath=$(HOME)/harman
 
