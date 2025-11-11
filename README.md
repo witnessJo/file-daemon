@@ -56,8 +56,8 @@ make helm-sentinel
 
 This command:
 
--   Creates local \~/harman directory
--   Host-mounts path can be changed in Makefile \$(HOST~DIRPATH~)
+-   Creates local ~/harman directory
+-   Host-mounts path can be changed in Makefile `$(HOST_DIR_PATH)`
 -   Starts minikube mount in background
 -   Deploys DaemonSet to all nodes
 
@@ -80,9 +80,9 @@ kubectl exec helm-postgres-postgresql-0 -- \
 
 Environment variables (helm-sentinel/values.yaml):
 
--   TARGET~DIRPATH~: Directory to monitor (default: /mnt/harman)
--   MINUTE~CYCLE~: Scan interval in minutes (default: 1)
--   LOG~LEVEL~: DEBUG, INFO, or ERROR (default: DEBUG)
+-   `TARGET_DIR_PATH`: Directory to monitor (default: /mnt/harman)
+-   `MINUTE_CYCLE`: Scan interval in minutes (default: 1)
+-   `LOG_LEVEL`: DEBUG, INFO, or ERROR (default: DEBUG)
 
 Database credentials are stored in Kubernetes Secret (db-secret).
 
@@ -116,15 +116,15 @@ CREATE TABLE file_infos (
 
 ## Makefile Targets
 
-  Target               Description
-  -------------------- --------------------------------
-  make minikube        Create 2-node Minikube cluster
-  make docker          Build and load Docker image
-  make helm-postgres   Deploy PostgreSQL database
-  make helm-sentinel   Deploy file-sentinel DaemonSet
-  make unmount         Stop minikube mount process
-  make build           Build Go binary
-  make test            Run tests
+| Target | Description |
+|--------|-------------|
+| `make minikube` | Create 2-node Minikube cluster |
+| `make docker` | Build and load Docker image |
+| `make helm-postgres` | Deploy PostgreSQL database |
+| `make helm-sentinel` | Deploy file-sentinel DaemonSet |
+| `make unmount` | Stop minikube mount process |
+| `make build` | Build Go binary |
+| `make test` | Run tests |
 
 ## Architecture
 
