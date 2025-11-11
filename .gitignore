@@ -10,5 +10,5 @@ CLAUDE.md
 build
 
 # dependency image files
-helm-sentinel/charts/
+helm-postgres/charts/
 helm-sentinel/charts/
