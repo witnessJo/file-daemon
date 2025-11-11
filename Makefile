@@ -31,10 +31,12 @@ helm-postgres:
 	helm dependency update helm-postgres
 	helm upgrade --install helm-postgres helm-postgres
 
+# download ent-go mandatory binaries
 .PHONY: ent-install
 ent-install:
 	go install entgo.io/ent/cmd/ent@latest
 
+# build ent-go ORM
 .PHONY: ent
 ent:
 	ent generate --feature sql/upsert ./ent/schema
@@ -49,7 +51,7 @@ mount:
 	@echo "Mounting local directory to all Minikube nodes..."
 	@echo "Keep this running in a separate terminal!"
 	@mkdir -p $(HOST_DIR_PATH)
-	minikube mount $(HOST_DIR_PATH):/home/witnessjo/harman -p harman
+	minikube mount $(HOST_DIR_PATH):$(HOST_DIR_PATH) -p harman
 
 .PHONY: helm-sentinel
 helm-sentinel:
@@ -58,7 +60,7 @@ helm-sentinel:
 	@-pgrep -f "minikube mount" | xargs -r kill 2>/dev/null || true
 	@sleep 1
 	@echo "Starting minikube mount in background..."
-	@nohup minikube mount $(HOST_DIR_PATH):/home/witnessjo/harman -p harman > /tmp/minikube-mount.log 2>&1 &
+	@nohup minikube mount $(HOST_DIR_PATH):$(HOST_DIR_PATH) -p harman > /tmp/minikube-mount.log 2>&1 &
 	@sleep 3
 	@echo "Deploying helm chart..."
 	@helm dependency update helm-sentinel

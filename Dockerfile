@@ -9,6 +9,8 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 
+RUN make ent-install
+RUN make ent
 RUN make build
 
 # runtime
