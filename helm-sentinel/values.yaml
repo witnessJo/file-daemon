@@ -13,8 +13,8 @@ app:
   logLevel: DEBUG
 
 persistence:
-  enabled: true
+  enabled: false
   storage: 1Gi
-  accessMode: ReadWriteOnce
+  accessMode: ReadWriteMany
   name: file-sentinel-pv
   claimName: file-sentinel-pvc

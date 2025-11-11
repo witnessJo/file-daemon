@@ -67,5 +67,6 @@ spec:
 
       volumes:
         - name: file-sentinel-volume
-          persistentVolumeClaim:
-            claimName: {{ .Values.persistence.claimName }}
+          hostPath:
+            path: {{ .Values.app.hostDirPath }}
+            type: DirectoryOrCreate
