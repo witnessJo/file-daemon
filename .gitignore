@@ -8,3 +8,7 @@ CLAUDE.md
 
 # binary files
 build
+
+# dependency image files
+helm-sentinel/charts/
+helm-sentinel/charts/
