@@ -51,11 +51,27 @@ func init() {
 	}
 }
 
+func MustEnv(key string) string {
+	value := os.Getenv(key)
+	if value == "" {
+		slog.Error("Environment variable not set", "key", key)
+		os.Exit(1)
+	}
+	return value
+}
+
 func main() {
 	slog.Info("Starting File Sentinel...")
 	slog.Info("env TARGET_DIR_PATH value", "TARGET_DIR_PATH", os.Getenv("TARGET_DIR_PATH"))
 	slog.Info("env MINUTE_CYCLE value", "MINUTE_CYCLE", os.Getenv("MINUTE_CYCLE"))
-	repo, err := repository.NewRepositoryNative()
+
+	host := MustEnv("DB_HOST")
+	port := MustEnv("DB_PORT")
+	name := MustEnv("DB_NAME")
+	user := MustEnv("DB_USER")
+	passwd := MustEnv("DB_PASS")
+
+	repo, err := repository.NewRepositoryEnt(host, port, user, passwd, name)
 	if err != nil {
 		slog.Error("Error creating repository", "error", err)
 		return

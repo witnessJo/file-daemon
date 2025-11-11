@@ -1,0 +1,28 @@
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.persistence.name }}
+spec:
+  capacity:
+    storage: {{ .Values.persistence.storage }}
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  hostPath:
+    path: {{ .Values.app.hostDirPath }}
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.persistence.claimName }}
+spec:
+  accessModes:
+    - {{ .Values.persistence.accessMode }}
+  storageClassName: ""
+  volumeName: {{ .Values.persistence.name }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.storage }}
+{{- end }}
