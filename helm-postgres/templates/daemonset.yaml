@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "file-daemon.fullname" . }}
+  labels:
+    {{- include "file-daemon.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "file-daemon.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "file-daemon.name" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: db-secret
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 64Mi

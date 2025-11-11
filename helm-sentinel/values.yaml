@@ -1,0 +1,20 @@
+image:
+  repository: file-sentinel
+  tag: latest
+  pullPolicy: IfNotPresent
+
+db:
+  secretName: db-secret
+
+app:
+  targetDirPath: /mnt/harman
+  hostDirPath: /home/witnessjo/harman
+  minuteCycle: "1"
+  logLevel: DEBUG
+
+persistence:
+  enabled: true
+  storage: 1Gi
+  accessMode: ReadWriteOnce
+  name: file-sentinel-pv
+  claimName: file-sentinel-pvc

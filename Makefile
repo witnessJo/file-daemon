@@ -38,3 +38,12 @@ ent:
 .PHONY: docker
 docker:
 	docker build -t file-sentinel:latest .
+	minikube image load file-sentinel:latest -p harman
+
+.PHONY: helm-sentinel
+helm-sentinel:
+	helm upgrade --install file-sentinel helm-sentinel \
+	--set app.hostDirPath=$(HOME)/harman
+
+
+

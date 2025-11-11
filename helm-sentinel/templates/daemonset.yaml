@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "file-sentinel.fullname" . }}
+  labels:
+    {{- include "file-sentinel.labels" . | nindent 4 }}
+    
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "file-sentinel.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "file-sentinel.fullname" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          env:
+            # 앱 동작용 환경변수
+            - name: TARGET_DIR_PATH
+              value: {{ .Values.app.targetDirPath | quote }}
+            - name: MINUTE_CYCLE
+              value: {{ .Values.app.minuteCycle | quote }}
+            - name: LOG_LEVEL
+              value: {{ .Values.app.logLevel | quote }}
+
+            # DB 접속정보 (Secret에서 가져오기)
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.secretName }}
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.secretName }}
+                  key: DB_EXTERNAL_PORT
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.secretName }}
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.secretName }}
+                  key: DB_USER
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.secretName }}
+                  key: DB_PASSWORD
+
+          volumeMounts:
+            - name: file-sentinel-volume
+              mountPath: {{ .Values.app.targetDirPath }}
+
+      volumes:
+        - name: file-sentinel-volume
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.claimName }}
